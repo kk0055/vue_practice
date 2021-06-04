@@ -13,12 +13,10 @@
    </div>
    <div class="pt-8 flex w-full">
      <div v-for="plan in plans" :key="plan.index" class="text-white w-1/2">
-       <h1 >Starter</h1>
+       <h1 >{{plan.name}}</h1>
        <ul>
-         <li>Benefit1</li>
-         <li>Benefit1</li>
-         <li>Benefit1</li>
-         <li>Benefit1</li>
+         <li v-for="benefit in plan.benefits[currentFrequency]">{{benefit}}</li>
+        
        </ul>
        <div class="flex justify-center pt-8">
        <div class="text-4xl font-bold">${{plan.pricing[currentFrequency].price}}</div>
@@ -40,15 +38,25 @@ export default {
 
      plans: [
        {
+          name: "Starter",
+          benefits: {
+            monthly: ['Benefit1','Benefit2','Benefit3'],
+            yearly: ['Benefit1','Benefit1','Benefit1','Benefit4']
+          },
           pricing: {
             monthly: {price: 99, label: '/mo'},
             yearly: {price: 499, label: '/yr'},
           }
        },
         {
+            name: "Pro",
+            benefits: {
+            monthly: ['Benefit1','Benefit1','Benefit1'],
+            yearly: ['Benefit1','Benefit1','Benefit1','Benefit4']
+          },
           pricing: {
             monthly: {price: 59, label: '/mo'},
-            yearly: {price: 899, label: '/yr'},
+            yearly: {price: 299, label: '/yr'},
           }
        },
      ]
