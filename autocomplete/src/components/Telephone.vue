@@ -12,14 +12,29 @@ export default {
   ],
  data: function() {
    return {
-     number:''
+     number:'',
+     format:'',
+     regex: '^'
      }
+   },
+   mounted() {
+     let x =1;
+
+     this.format = this.template.replace(/X+/g, () =>'$'+ x++ );
+
+     this.template.match(/X+/g).forEach((char,key) => {
+
+        // console.log(key);
+        this.regex += '(\\d{' + char.length + '})?';
+        console.log(this.regex)
+     });
    },
 
    watch: {
      number() {
      this.number = this.number.replace(/[^0-9]/g, '')
-     .replace(/^(\d{3})(\d{4})(\d{4})/g, '($1) $2-$3');
+     .replace(new RegExp(this.regex, 'g'), this.format)
+     .substr(0, this.template.length);
    }
  }
 }
