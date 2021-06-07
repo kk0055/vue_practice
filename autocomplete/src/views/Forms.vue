@@ -1,6 +1,6 @@
 <template>
 <div>
-  <Telephone/>
+  <Telephone  template="(XXX) XXX XXXX" />
 </div>
 </template>
 
