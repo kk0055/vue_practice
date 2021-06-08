@@ -1,4 +1,5 @@
 <template>
+<div>
 <form v-if="!loading" class="form" v-on:submit.prevent="onSubmit">
   <div class="input-field">
       <label for="title">Title</label>
@@ -23,10 +24,25 @@
    Add
  </button>
 </form>
+  <div class="preloader-wrapper big active" v-else-if="loading">
+    <div class="spinner-layer spinner-blue-only">
+      <div class="circle-clipper left">
+        <div class="circle"></div>
+      </div><div class="gap-patch">
+        <div class="circle"></div>
+      </div><div class="circle-clipper right">
+        <div class="circle"></div>
+      </div>
+    </div>
+  </div>
+  </div>
 </template>
 
 
 <script>
+import PostService from '../PostService';
+const postService = new PostService();
+
 export default {
   name:"PostForm",
   data() {
@@ -37,9 +53,20 @@ export default {
     }
   },
   methods: {
-    onsubmit() {
+    onSubmit() {
       this.loading = true;
-      
+         const post = {
+           title: this.title,
+           body: this.body
+         };
+         postService.writePost(post)
+         .then(res => {
+           this.loading = false;
+           this.title = '';
+           this.body = '';
+           console.log(res.data);
+         })
+         .catch(err => console.log(err));
     }
   }
 }
