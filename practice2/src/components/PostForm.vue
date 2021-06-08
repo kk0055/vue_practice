@@ -5,7 +5,7 @@
       <label for="title">Title</label>
       <input type="text" name="title"
       v-model="title"
-      :class="[errors.title ? 'invalid' :validate]"
+      :class="[errors.title ? 'invalid' :'validate']"
       >
       <span class="helper-text" data-error="Title must not be empty" > </span>
      
@@ -15,7 +15,7 @@
           <label for="body">Body</label>
           <input type="text" name="body"
           v-model="body"
-            :class="[errors.body ? 'invalid' :validate]"
+            :class="[errors.body ? 'invalid' :'validate']"
           >
           <span class="helper-text" data-error="Body must not be empty" > </span>
          
@@ -73,6 +73,7 @@ export default {
            this.loading = false;
            this.title = '';
            this.body = '';
+           this.$emit('postCreated', post);
            console.log(res.data);
          })
          .catch(err => console.log(err));
