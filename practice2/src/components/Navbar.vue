@@ -2,11 +2,12 @@
     <nav>
     <div class="nav-wrapper">
       <div class="container">
-      <a href="#" class="brand-logo">Vue Practice2</a>
+      <router-link  to="/" class="brand-logo">Vue Practice2</router-link>
       <ul id="nav-mobile" class="right hide-on-med-and-down">
-        <li><a href="sass.html">Sass</a></li>
-        <li><a href="/">Home</a></li>
-        <li><a href="/about">About</a></li>
+       
+        <li><router-link  to="/">Home</router-link></li>
+        <li><router-link  to="/about">About</router-link></li>
+       
       </ul>
       </div>
     </div>
