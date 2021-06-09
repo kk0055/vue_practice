@@ -73,7 +73,8 @@ export default {
            this.loading = false;
            this.title = '';
            this.body = '';
-           this.$emit('postCreated', post);
+           //emit
+           this.$emit('postCreated', res.data);
            console.log(res.data);
          })
          .catch(err => console.log(err));

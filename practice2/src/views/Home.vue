@@ -5,6 +5,11 @@
    <!-- Form -->
    <PostForm @postCreated='addPost' />
  </div>
+ <div class="col s3" style="margin:50px;">
+   <p>Limie number of posts</p>
+   <input type="number" v-model="postLimit">
+   <button @click="setLimit()" class="waves-effect waves-light btn"> Set  </button>
+ </div>
 </div>
 <div class="row">
   <div class="col s6" v-for="(post, index) in posts"
@@ -19,8 +24,8 @@
         <p>{{post.body}}</p>
       </div>
       <div class="card-action">
-        <a href="">Edit</a>
-        <a href="" class="delete-btn">Delete</a>
+        <a href="#" @click="editPost(post)" >Edit</a>
+        <a href="#" class="delete-btn" @click="deletePost(post.id)">Delete</a>
       </div>
     </div>
   </div>
@@ -39,14 +44,32 @@ export default {
   },
   data(){
     return {
-      posts:[]
+      posts:[],
+      postLimit:5
     }
   },
   methods: {
    //PostFormから受け取った値を追加
    addPost(post){
      this.posts.unshift(post);
-   }
+   },
+  editPost(post){
+
+  },
+    deletePost(id){
+    postService.deletePost(id)
+    .then(() => {
+      this.posts = this.posts.filter(p => p.id !== id);
+      console.log('post deleted');
+    })
+    .catch(err => console.log(err))
+  },
+  setLimit(){
+    postService.getPosts(this.postLimit)
+      .then(res => this.posts = res.data)
+      .catch(err => console.log(err))
+
+  }
   },
   created() {
     postService
