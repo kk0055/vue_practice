@@ -3,7 +3,7 @@
 <div class="row">
  <div class="col s6">
    <!-- Form -->
-   <PostForm @postCreated='addPost' />
+   <PostForm @postCreated='addPost' :editingPost="editingPost" />
  </div>
  <div class="col s3" style="margin:50px;">
    <p>Limie number of posts</p>
@@ -45,7 +45,8 @@ export default {
   data(){
     return {
       posts:[],
-      postLimit:5
+      postLimit:5,
+      editingPost:null
     }
   },
   methods: {
@@ -54,7 +55,7 @@ export default {
      this.posts.unshift(post);
    },
   editPost(post){
-
+    this.editingPost = post;
   },
     deletePost(id){
     postService.deletePost(id)

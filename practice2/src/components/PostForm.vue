@@ -46,6 +46,10 @@ const postService = new PostService();
 
 export default {
   name:"PostForm",
+  // 親（Home）から値を受け取る
+  props: {
+    editingPost:Object
+  },
   data() {
     return {
       loading : false,
@@ -91,6 +95,12 @@ export default {
         return false;
       }else return true;
 
+    }
+  },
+  watch: {
+    editingPost(post){
+      this.title = post.title;
+      this.body = post.body;
     }
   }
 }
