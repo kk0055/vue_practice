@@ -21,7 +21,7 @@
          
   </div>
  <button type="submit" class="waves-effect waves-light btn">
-   Add
+   {{ id ? 'Update' : 'Add' }}
  </button>
 </form>
   <div class="preloader-wrapper big active" 
@@ -55,9 +55,8 @@ export default {
       loading : false,
       title: '',
       body: '',
-      errors: {
-
-      }
+      id:null,
+      errors: {}
     }
   },
   methods: {
@@ -70,7 +69,8 @@ export default {
       
          const post = {
            title: this.title,
-           body: this.body
+           body: this.body,
+           id:this.id
          };
          postService.writePost(post)
          .then(res => {
@@ -101,6 +101,7 @@ export default {
     editingPost(post){
       this.title = post.title;
       this.body = post.body;
+      this.id = post.id;
     }
   }
 }

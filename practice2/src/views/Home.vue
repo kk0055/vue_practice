@@ -20,7 +20,7 @@
     <div class="card">
       <div class="card-content">
         <p class="card-title">{{post.title }}</p>
-        <p class="timestamp">{{post.createdAt }}</p>
+        <p class="timestamp">{{post.createdAt | formatDate}}</p>
         <p>{{post.body}}</p>
       </div>
       <div class="card-action">
@@ -52,7 +52,10 @@ export default {
   methods: {
    //PostFormから受け取った値を追加
    addPost(post){
-     this.posts.unshift(post);
+     if(this.posts.find(p => p.id === post.id)){
+       const index = this.posts.findIndex(p => p.id === post.id);
+       this.posts.splice(index, 1, post);
+     }else  this.posts.unshift(post);
    },
   editPost(post){
     this.editingPost = post;
@@ -80,6 +83,16 @@ export default {
        console.log(this.posts);
      })
      .catch(err => console.log(err));
+  },
+  filters: {
+    formatDate(date) {
+       date = new Date(date);
+       const day = date.getDate();
+       const month = date.getMonth() + 1;
+       const year = date.getFullYear();
+
+       return `${day}-${month}-${year}`
+    }
   }
 }
 </script>

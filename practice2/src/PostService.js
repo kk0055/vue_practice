@@ -13,7 +13,7 @@ export default class PostService {
   // Postの投稿
   writePost(post) {
     if(post.id){
-      return axios.put(`/post/${ppost.id}` , post)
+      return axios.put(`/post/${post.id}` , post)
       //Postが存在しない場合新規作成
     }else return axios.post('/post', post)
   }
