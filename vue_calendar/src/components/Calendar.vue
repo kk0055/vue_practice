@@ -41,10 +41,11 @@
           </v-menu>
         </v-toolbar>
       </v-sheet>
-
+    <!-- dialog  -->
       <v-dialog v-model="dialog" max-width="500">
         <v-card>
           <v-container>
+             <!-- addEvent  -->
             <v-form @submit.prevent="addEvent">
               <v-text-field v-model="name" type="text" label="event name (required)"></v-text-field>
               <v-text-field v-model="details" type="text" label="detail"></v-text-field>
@@ -231,7 +232,7 @@ export default {
       this.$refs.calendar.next()
     },
     async addEvent () {
-      if (this.name && this.start && this.end) {
+      if (this.name && this.start  && this.end) {
         await db.collection("calEvent").add({
           name: this.name,
           details: this.details,
