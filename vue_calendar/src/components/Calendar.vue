@@ -49,8 +49,8 @@
             <v-form @submit.prevent="addEvent">
               <v-text-field v-model="name" type="text" label="event name (required)"></v-text-field>
               <v-text-field v-model="details" type="text" label="detail"></v-text-field>
-              <v-text-field v-model="start" type="date" label="start (required)"></v-text-field>
-              <v-text-field v-model="end" type="date" label="end (required)"></v-text-field>
+              <v-text-field v-model="start" type="date" label="start"></v-text-field>
+              <v-text-field v-model="end" type="date" label="end"></v-text-field>
               <v-text-field v-model="color" type="color" label="color (click to open color menu)"></v-text-field>
               <v-btn type="submit" color="primary" class="mr-4" @click.stop="dialog = false">
                 create event
@@ -66,8 +66,8 @@
             <v-form @submit.prevent="addEvent">
               <v-text-field v-model="name" type="text" label="event name (required)"></v-text-field>
               <v-text-field v-model="details" type="text" label="detail"></v-text-field>
-              <v-text-field v-model="start" type="date" label="start (required)"></v-text-field>
-              <v-text-field v-model="end" type="date" label="end (required)"></v-text-field>
+              <v-text-field v-model="start" type="date" label="start"></v-text-field>
+              <v-text-field v-model="end" type="date" label="end"></v-text-field>
               <v-text-field v-model="color" type="color" label="color (click to open color menu)"></v-text-field>
               <v-btn type="submit" color="primary" class="mr-4" @click.stop="dialog = false">
                 create event
@@ -166,16 +166,16 @@ export default {
     dialog: false,
     dialogDate: false
   }),
-  mounted() {
+  mounted () {
     this.getEvents()
   },
   computed: {
-    title() {
-      const {start, end} = this
+    title () {
+      const { start, end } = this
       if (!start || !end) {
         return ''
       }
-     const startMonth = this.monthFormatter(start)
+      const startMonth = this.monthFormatter(start)
       const endMonth = this.monthFormatter(end)
       const suffixMonth = startMonth === endMonth ? '' : endMonth
       const startYear = start.year
@@ -191,16 +191,16 @@ export default {
         return `${startMonth} ${startDay} ${startYear} - ${suffixMonth} ${endDay} ${suffixYear}`
         case 'day':
         return `${startMonth} ${startDay} ${startYear}`
-    }
-     return ''
-  },
-     monthFormatter () {
+      }
+      return ''
+    },
+    monthFormatter () {
       return this.$refs.calendar.getFormatter({
         timeZone: 'UTC', month: 'long',
       })
     }
   },
-    methods: {
+  methods: {
     async getEvents () {
       let snapshot = await db.collection('calEvent').get()
       const events = []
@@ -232,7 +232,7 @@ export default {
       this.$refs.calendar.next()
     },
     async addEvent () {
-      if (this.name && this.start  && this.end) {
+      if (this.name && this.start && this.end) {
         await db.collection("calEvent").add({
           name: this.name,
           details: this.details,
