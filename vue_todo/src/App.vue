@@ -36,10 +36,16 @@ export default {
      if (confirm('Are you sure?')){
        this.tasks = this.tasks.filter((task) => task.id !== id)
      }
+   },
+   async fetchTasks() {
+     const res = await fetch('http://localhost:8080/tasks');
+     const data = await res.json()
+
+     return data
    }
   },
-  created() {
-    this.tasks = ''
+  async created() {
+    this.tasks = await this.fetchTasks()
   }
 }
 </script>
