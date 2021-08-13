@@ -26,11 +26,15 @@
             {{ day.day }}
           </div>
             <div v-for="dayEvent in day.dayEvents" :key="dayEvent.id" >
-    <div 
-      class="calendar-event"
-      :style="`background-color:${dayEvent.color}`" >
-      {{ dayEvent.name }}
-    </div>
+        
+     <div
+    v-if="dayEvent.width"
+    class="calendar-event"
+    :style="`width:${dayEvent.width}%;background-color:${dayEvent.color}`" 
+    draggable="true" >
+    {{ dayEvent.name }}
+  </div>
+      <div v-else style="height:26px"></div>
   </div>
         </div>
       </div>
@@ -93,7 +97,7 @@ export default {
         let weekRow = [];
         for (let day = 0; day < 7; day++) {
           //イベントを取得
-           let dayEvents = this.getDayEvents(calendarDate)
+           let dayEvents = this.getDayEvents(calendarDate, day);
           weekRow.push({
           day: calendarDate.get("date"),
           month: calendarDate.format("YYYY-MM"),
@@ -117,18 +121,63 @@ dayOfWeek(dayIndex) {
   return week[dayIndex];
 },
  //イベントを取得
-getDayEvents(date){
-  return this.events.filter(event => {
+getDayEvents(date, day){
+  let stackIndex = 0;
+  let dayEvents = [];
+  let startedEvents = [];
+  this.sortedEvents.forEach(event => {
     let startDate = moment(event.start).format('YYYY-MM-DD')
     let endDate = moment(event.end).format('YYYY-MM-DD')
     let Date = date.format('YYYY-MM-DD')
-    if(startDate <= Date && endDate >= Date) return true;
+
+    if(startDate <= Date && endDate >= Date){
+      if(startDate === Date){
+        [stackIndex, dayEvents] = this.getStackEvents(event, day, date, stackIndex, dayEvents, startedEvents, event.start);
+      }else if(day === 0){
+        [stackIndex, dayEvents] = this.getStackEvents(event, day, date, stackIndex, dayEvents, startedEvents, Date);
+      }else{
+        startedEvents.push(event)
+      }
+    }
   });
-}
+  return dayEvents;
+},
+//イベントの長さを計算
+getEventWidth(end, start, day){
+  let betweenDays = moment(end).diff(moment(start), "days")
+  if(betweenDays > 6 - day){
+    return (6 - day) * 100 + 95; 
+  }else{
+    return betweenDays * 100 + 95;
+  }
+},
+getStackEvents(event, day, stackIndex, dayEvents, startedEvents, start){
+  [stackIndex, dayEvents] = this.getStartedEvents(stackIndex, startedEvents, dayEvents)
+  let width = this.getEventWidth(start, event.end, day)
+  Object.assign(event,{
+    stackIndex
+  })
+  dayEvents.push({...event, width})
+  stackIndex++;
+  return [stackIndex,dayEvents];
+},
+getStartedEvents(stackIndex, startedEvents, dayEvents){
+  let startedEvent;
+  do{
+    startedEvent = startedEvents.find(event => event.stackIndex === stackIndex)
+    if(startedEvent) {
+      dayEvents.push(startedEvent)
+      stackIndex++;
+    }
+  }while(typeof startedEvent !== 'undefined')
+  return [stackIndex, dayEvents]
+},
   },
+
   mounted() {
   console.log(this.getCalendar());
   },  
+
   computed: {
     calendars() {
       return this.getCalendar();
@@ -139,6 +188,17 @@ getDayEvents(date){
   currentMonth(){
   return this.currentDate.format('YYYY-MM')
 },
+//開始日でソート
+sortedEvents(){
+  return this.events.slice().sort(function(a,b) {
+    let startDate = moment(a.start).format('YYYY-MM-DD')
+    let startDate_2 = moment(b.start).format('YYYY-MM-DD')
+    if( startDate < startDate_2 ) return -1;
+    if( startDate > startDate_2 ) return 1;
+    return 0;
+  })
+},
+
   },
 };
 </script>
@@ -189,5 +249,15 @@ getDayEvents(date){
   margin-bottom:1px;
   height:25px;
   line-height:25px;
+}
+.calendar-event{
+  color:white;
+  margin-bottom:1px;
+  height:25px;
+  line-height:25px;
+  position: relative;
+  z-index:1;
+  border-radius:4px;
+  padding-left:4px;
 }
 </style>
