@@ -25,6 +25,13 @@
           <div class="calendar-day">
             {{ day.day }}
           </div>
+            <div v-for="dayEvent in day.dayEvents" :key="dayEvent.id" >
+    <div 
+      class="calendar-event"
+      :style="`background-color:${dayEvent.color}`" >
+      {{ dayEvent.name }}
+    </div>
+  </div>
         </div>
       </div>
     </div>
@@ -37,6 +44,27 @@ export default {
   data() {
     return {
       currentDate: moment(),
+      events:[
+  { id: 1, name: "ミーティング", start: "2021-08-01", end:"2021-08-01", color:"blue"},
+  { id: 2, name: "イベント", start: "2021-08-02", end:"2021-08-03", color:"limegreen"},
+  { id: 3, name: "会議", start: "2021-08-06", end:"2021-08-06", color:"deepskyblue"},
+  { id: 4, name: "有給", start: "2021-08-08", end:"2021-08-08", color:"dimgray"},
+  { id: 5, name: "海外旅行", start: "2021-08-08", end:"2021-08-11", color:"navy"},
+  { id: 6, name: "誕生日", start: "2021-08-16", end:"2021-08-16", color:"orange"},
+  { id: 7, name: "イベント", start: "2021-08-12", end:"2021-08-15", color:"limegreen"},
+  { id: 8, name: "出張", start: "2021-08-12", end:"2021-08-13", color:"teal"},
+  { id: 9, name: "客先訪問", start: "2021-08-14", end:"2021-08-14", color:"red"},
+  { id: 10, name: "パーティ", start: "2021-08-15", end:"2021-08-15", color:"royalblue"},
+  { id: 12, name: "ミーティング", start: "2021-08-18", end:"2021-08-19", color:"blue"},
+  { id: 13, name: "イベント", start: "2021-08-21", end:"2021-08-21", color:"limegreen"},
+  { id: 14, name: "有給", start: "2021-08-20", end:"2021-08-20", color:"dimgray"},
+  { id: 15, name: "イベント", start: "2021-08-25", end:"2021-08-28", color:"limegreen"},
+  { id: 16, name: "会議", start: "2021-08-21", end:"2021-08-21", color:"deepskyblue"},
+  { id: 17, name: "旅行", start: "2021-08-23", end:"2021-08-24", color:"navy"},
+  { id: 18, name: "ミーティング", start: "2021-08-28", end:"2021-08-28", color:"blue"},
+  { id: 19, name: "会議", start: "2021-08-12", end:"2021-08-12", color:"deepskyblue"},
+  { id: 20, name: "誕生日", start: "2021-08-30", end:"2021-08-30", color:"orange"},
+]
     };
   },
   methods: {
@@ -52,6 +80,7 @@ export default {
       const youbiNum = date.day();
       return date.add(6 - youbiNum, "days");
     },
+    //カレンダーの情報を作成する
     getCalendar() {
       const startDate = this.getStartDate();
       const endDate = this.getEndDate();
@@ -63,9 +92,12 @@ export default {
       for (let week = 0; week < weekNumber; week++) {
         let weekRow = [];
         for (let day = 0; day < 7; day++) {
+          //イベントを取得
+           let dayEvents = this.getDayEvents(calendarDate)
           weekRow.push({
           day: calendarDate.get("date"),
           month: calendarDate.format("YYYY-MM"),
+          dayEvents
           });
           calendarDate.add(1, "days");
         }
@@ -77,12 +109,22 @@ export default {
       this.currentDate = moment(this.currentDate).add(1,'month');
     },
     prevMonth() {
+      //1引く
     this.currentDate = moment(this.currentDate).subtract(1, "month");
 },
 dayOfWeek(dayIndex) {
   const week = ["日", "月", "火", "水", "木", "金", "土"];
   return week[dayIndex];
 },
+ //イベントを取得
+getDayEvents(date){
+  return this.events.filter(event => {
+    let startDate = moment(event.start).format('YYYY-MM-DD')
+    let endDate = moment(event.end).format('YYYY-MM-DD')
+    let Date = date.format('YYYY-MM-DD')
+    if(startDate <= Date && endDate >= Date) return true;
+  });
+}
   },
   mounted() {
   console.log(this.getCalendar());
@@ -141,5 +183,11 @@ dayOfWeek(dayIndex) {
 }
 .outside{
   background-color: #f7f7f7;
+}
+.calendar-event{
+  color:white;
+  margin-bottom:1px;
+  height:25px;
+  line-height:25px;
 }
 </style>
