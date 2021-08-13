@@ -62,6 +62,12 @@ export default {
       }
       return calendars;
     },
+    nextMonth() {
+      this.currentDate = moment(this.currentDate).add(1,'month');
+    },
+    prevMonth() {
+    this.currentDate = moment(this.currentDate).subtract(1, "month");
+},
   },
   mounted() {
   console.log(this.getCalendar());
