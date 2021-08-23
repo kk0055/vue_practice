@@ -3,6 +3,7 @@ import Router from 'vue-router'
 
 import About from './views/About.vue'
 import Home from './views/Home.vue'
+import ProductListOne from './components/ProductListOne.vue'
 
 
 
@@ -18,6 +19,10 @@ export default new Router({
     {
       path: '/about',
       component:About
+    },
+    {
+      path: '/ProductListone',
+      component:ProductListOne
     },
   ]
 })
