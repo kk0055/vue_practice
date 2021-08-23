@@ -13,19 +13,17 @@
 <script>
 export default {
   computed: {
-    products() {
-      return this.$store.state.products
-    },
       saleProducts() {
       return this.$store.getters.saleProducts
     },
   },
   methods: {
-   reducePrice:function(){
+   reducePrice:function(amount){
     //  this.$store.state.products.forEach(product => {
     //    product.price -= 1
     //  });
-    this.$store.commit("reducePrice")
+    // this.$store.commit("reducePrice",amount)
+    this.$store.dispatch("reducePrice",amount)
    }
   }
 }
