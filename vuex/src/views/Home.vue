@@ -2,11 +2,11 @@
   <div class="home">
     <img alt="Vue logo" src="../assets/logo.png">
  <div class="counter">
-
+{{ $store.state.counter }}
  </div>
  <div class="buttons">
-   <button>-</button>
-   <button>+</button>
+   <button  @click="$store.commit('decreaseCounter')">-</button>
+   <button @click="$store.commit('increaseCounter')">+</button>
  </div>
   </div>
 </template>
@@ -18,6 +18,9 @@
 export default {
   name: 'Home',
 
+ methods: {
+
+ }
 }
 </script>
 <style >
