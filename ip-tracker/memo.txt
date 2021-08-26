@@ -1,0 +1,11 @@
+Mapbox
+https://account.mapbox.com/
+
+IP geolocation
+https://ipgeolocation.io/
+
+leafletjs
+https://leafletjs.com/examples/quick-start/
+
+IP Geolocation API
+https://geo.ipify.org/subscriptions

@@ -43,7 +43,7 @@
 import IPInfo from "../components/IPInfo.vue";
 import leaflet from "leaflet";
 import { onMounted, ref } from "vue";
-
+import axios from "axios";
 export default {
   name: 'Home',
   components: {
@@ -60,6 +60,7 @@ export default {
       mymap = leaflet.map("mapid").setView([42.5145, -83.0147], 9);
       leaflet
         .tileLayer(
+          //https://www.mapbox.com/
           "https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token=pk.eyJ1Ijoia2swMDU1IiwiYSI6ImNrc3NnNTQyYzA0MGsydm8zNTNvOGo3M2oifQ.Nrm9JIUbDm_vejkvaSIfsw",
           {
             attribution:
@@ -78,7 +79,8 @@ export default {
     const getIpInfo = async () => {
       try {
         const data = await axios.get(
-          `https://geo.ipify.org/api/v1?apiKey=at_FBTi0rGPhQlKp2cRdOJV0t3Mibq6F&ipAddress=${queryIp.value}`
+          //https://geo.ipify.org/subscriptions
+          `https://geo.ipify.org/api/v1?apiKey=at_j8RBi039MrLQKGVGPfQgQ4OXrTgYS&ipAddress=${queryIp.value}`
         );
         const result = data.data;
         ipInfo.value = {
@@ -95,6 +97,7 @@ export default {
         alert(err.message);
       }
     };
+    // v-model="queryIp"でbind
     return { queryIp, ipInfo, getIpInfo };
   },
 };
