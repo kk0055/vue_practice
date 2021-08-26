@@ -28,7 +28,8 @@
           ></i>
         </div>
       </div>
-
+      <!-- IP Info -->
+      <IPInfo v-if="ipInfo" v-bind:ipInfo="ipInfo" />
     </div>
 
     <!-- Map -->
@@ -39,12 +40,12 @@
 
 <script>
 // @ is an alias to /src
-
+import IPInfo from "../components/IPInfo.vue";
 
 export default {
   name: 'Home',
   components: {
-  
+  IPInfo 
   }
 }
 </script>
