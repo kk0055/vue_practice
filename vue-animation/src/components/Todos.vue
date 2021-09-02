@@ -7,11 +7,11 @@
       placeholder="Add a new todo..."
     />
     <div v-if="todos.length">
-      <ul>
+      <transition-group tag="ul" name="list">
         <li v-for="todo in todos" :key="todo.id" @click="deleteTodo(todo.id)">
           {{ todo.text }}
         </li>
-      </ul>
+      </transition-group>
     </div>
     <div v-else>Woohoo, nothing left todo!</div>
   </div>
@@ -79,4 +79,6 @@ export default {
   .todos li:hover {
     cursor: pointer;
   }
+
+  /* list transition */
 </style>
