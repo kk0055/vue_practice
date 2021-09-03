@@ -1,14 +1,24 @@
 <template>
-  <div class="block">
+  <div class="block" v-if="showBlock" >
     
   </div>
 </template>
 
 <script>
 export default {
-  props:[
-
-  ]
+  //Appからdelayを取得
+  props:['delay' ],
+  data() {
+      return {
+        showBlock:false
+      }
+  },
+  mounted() {
+   setTimeout(() => {
+     this.showBlock = true
+   }, this.delay)
+  },
+ 
 }
 </script>
 
