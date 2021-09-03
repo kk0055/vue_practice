@@ -1,26 +1,37 @@
 <template>
-  <img alt="Vue logo" src="./assets/logo.png">
-  <HelloWorld msg="Welcome to Your Vue.js App"/>
+  <div >
+  <h1>Reaction Timer</h1>
+  <button @click="start">Play</button>
+  </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
 
 export default {
-  name: 'App',
-  components: {
-    HelloWorld
-  }
+  name:'App',
+  components:{},
+ data() {
+   return{
+     isPlaying:false,
+     delay:null
+   
+   }
+ },
+ methods: {
+   start() {
+     this.delay = 2000 + Math.random()* 5000
+     this.isPlaying = true
+     console.log(this.delay)
+   }
+ }
 }
 </script>
 
-<style>
+<style >
 #app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+  -webkit-font-smoothing:antialiased;
   text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
+  margin-top:60px;
+  color: #444;
 }
 </style>
