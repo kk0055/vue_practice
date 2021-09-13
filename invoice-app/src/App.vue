@@ -3,6 +3,7 @@
    <div v-if="!mobile" class="app flex">
      <Navigation/>
       <div class="app flex flex-column">
+           <InvoiceModal/>
       <router-view />
    </div>
    </div>
@@ -14,29 +15,33 @@
 </template>
 <script>
 import Navigation from "./components/Navigation";
+// import Modal from "./components/Modal";
+import InvoiceModal from "./components/InvoiceModal";
 export default {
-  data() {
-   return {
-     mobile:null,
-   }
-  },
-  components: {
-Navigation
-  },
-    created() {
-   
-    // this.checkScreen();
-  },
-  methods: {
-    checkScreen() {
-  const windowWidth = window.innerWidth;
-  if (windowWidth <= 750) {
-    this.mobile = true;
-    return;
+data() {
+  return {
+    mobile:null,
   }
-  this.mobile = false;
 },
-  }
+components: {
+Navigation,
+InvoiceModal,
+// Modal
+},
+  created() {
+  
+  // this.checkScreen();
+},
+methods: {
+  checkScreen() {
+const windowWidth = window.innerWidth;
+if (windowWidth <= 750) {
+  this.mobile = true;
+  return;
+}
+this.mobile = false;
+},
+}
 }
 </script>
 <style lang="scss">

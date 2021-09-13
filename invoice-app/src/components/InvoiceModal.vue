@@ -1,9 +1,9 @@
 <template>
   <div @click="checkClick" ref="invoiceWrap" class="invoice-wrap flex flex-column">
     <form @submit.prevent="submitForm" class="invoice-content">
-      <Loading v-show="loading" />
-      <h1 v-if="!editInvoice">New Invoice</h1>
-      <h1 v-else>Edit Invoice</h1>
+      <!-- <Loading v-show="loading" /> -->
+      <!-- <h1 v-if="!editInvoice">New Invoice</h1>
+      <h1 v-else>Edit Invoice</h1> -->
 
       <!-- Bill From -->
       <div class="bill-from flex flex-column">
@@ -84,7 +84,7 @@
         </div>
         <div class="work-items">
           <h3>Item List</h3>
-          <table class="item-list">
+          <!-- <table class="item-list">
             <tr class="table-heading flex">
               <th class="item-name">Item Name</th>
               <th class="qty">Qty</th>
@@ -98,12 +98,12 @@
               <td class="total flex">${{ (item.total = item.qty * item.price) }}</td>
               <img @click="deleteInvoiceItem(item.id)" src="@/assets/icon-delete.svg" alt="" />
             </tr>
-          </table>
-
+          </table> -->
+<!-- 
           <div @click="addNewInvoiceItem" class="flex button">
             <img src="@/assets/icon-plus.svg" alt="" />
             Add New Item
-          </div>
+          </div> -->
         </div>
       </div>
 
@@ -123,7 +123,7 @@
 </template>
 
 <script>
-import Loading from "../components/Loading";
+// import Loading from "../components/Loading";
 export default {
   name: "invoiceModal",
   data() {
@@ -154,7 +154,7 @@ export default {
     };
   },
   components: {
-    Loading,
+    // Loading,
   },
   created() {
     // get current date for invoice date field
