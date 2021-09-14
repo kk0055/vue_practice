@@ -124,6 +124,7 @@
 
 <script>
 // import Loading from "../components/Loading";
+import { mapActions, mapMutations, mapState } from "vuex";
 export default {
   name: "invoiceModal",
   data() {
@@ -187,6 +188,22 @@ export default {
       this.invoiceTotal = currentInvoice.invoiceTotal;
     }
   },
+    methods: {
+    ...mapMutations(["TOGGLE_INVOICE", "TOGGLE_MODAL", "TOGGLE_EDIT_INVOICE"]),
+    ...mapActions(["UPDATE_INVOICE", "GET_INVOICES"]),
+    checkClick(e) {
+      if (e.target === this.$refs.invoiceWrap) {
+        this.TOGGLE_MODAL();
+      }
+    },
+    //Invoice Modalをクローズ
+    closeInvoice() {
+      this.TOGGLE_INVOICE();
+      if (this.editInvoice) {
+        this.TOGGLE_EDIT_INVOICE();
+      }
+    },
+    }
 };
 </script>
 
