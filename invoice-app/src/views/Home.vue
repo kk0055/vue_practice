@@ -4,7 +4,7 @@
     <div class="header flex">
       <div class="left flex flex-column">
         <h1>Invoices</h1>
-        <!-- <span>There are {{ invoiceData.length }} total invoices</span> -->
+        <span>There are {{ invoiceData.length }} total invoices</span>
       </div>
       <div class="right flex">
         <div @click="toggleFilterMenu" class="filter flex">
@@ -28,19 +28,20 @@
       </div>
     </div>
     <!-- Invoices -->
-    <!-- <div v-if="invoiceData.length > 0">
-      <Invoice v-for="(invoice, index) in filteredData" :invoice="invoice" :key="index" />
+    <div v-if="invoiceData.length > 0">
+      <Invoice v-for="(invoice, index) in invoiceData" :invoice="invoice" :key="index" />
     </div>
     <div v-else class="empty flex flex-column">
       <img src="@/assets/illustration-empty.svg" alt="" />
       <h3>There is nothing here</h3>
       <p>Create a new invoice by clicking the New Invoice button and get started</p>
-    </div> -->
+    </div>
   </div>
 </template>
 
 <script>
 import { mapMutations, mapState } from "vuex";
+import Invoice from "../components/Invoice";
 export default {
   name: "Home",
   data() {
@@ -49,7 +50,9 @@ export default {
     filteredInvoice: null,
   };
 },
-  components: {},
+ components: {
+    Invoice,
+  },
   methods: {
      ...mapMutations(["TOGGLE_INVOICE"]),
      //Modalのtoggle
@@ -60,9 +63,12 @@ export default {
       this.filterMenu = !this.filterMenu;
     },
     filteredInvoices() {
-      
+
     }
-  }
+  },
+  computed: {
+    ...mapState(['invoiceData']),
+  },
 };
 </script>
 
