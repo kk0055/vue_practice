@@ -1,9 +1,9 @@
 <template>
   <div @click="checkClick" ref="invoiceWrap" class="invoice-wrap flex flex-column">
     <form @submit.prevent="submitForm" class="invoice-content">
-      <!-- <Loading v-show="loading" /> -->
-      <!-- <h1 v-if="!editInvoice">New Invoice</h1>
-      <h1 v-else>Edit Invoice</h1> -->
+      <Loading v-show="loading" /> 
+       <h1 v-if="!editInvoice">New Invoice</h1>
+      <h1 v-else>Edit Invoice</h1>
 
       <!-- Bill From -->
       <div class="bill-from flex flex-column">
@@ -123,7 +123,7 @@
 </template>
 
 <script>
-// import Loading from "../components/Loading";
+import Loading from "../components/Loading";
 import db from "../firebase/firebaseInit";
 import { mapActions, mapMutations, mapState } from "vuex";
 import { uid } from "uid";
@@ -157,7 +157,7 @@ export default {
     };
   },
   components: {
-    // Loading,
+    Loading,
   },
   created() {
     // get current date for invoice date field
@@ -190,14 +190,14 @@ export default {
       this.invoiceTotal = currentInvoice.invoiceTotal;
     }
   },
-    methods: {
+  methods: {
     ...mapMutations(["TOGGLE_INVOICE", "TOGGLE_MODAL", "TOGGLE_EDIT_INVOICE"]),
     ...mapActions(["UPDATE_INVOICE", "GET_INVOICES"]),
     checkClick(e) {
       if (e.target === this.$refs.invoiceWrap) {
         this.TOGGLE_MODAL();
       }
-    },    
+    },
     closeInvoice() {
       this.TOGGLE_INVOICE();
       if (this.editInvoice) {
@@ -213,10 +213,11 @@ export default {
         total: 0,
       });
     },
-      deleteInvoiceItem(id) {
+    deleteInvoiceItem(id) {
       this.invoiceItemList = this.invoiceItemList.filter((item) => item.id !== id);
     },
-       calInvoiceTotal() {
+    //合計のnvoiceを計算
+    calInvoiceTotal() {
       this.invoiceTotal = 0;
       this.invoiceItemList.forEach((item) => {
         this.invoiceTotal += item.total;
@@ -227,7 +228,78 @@ export default {
     },
     saveDraft() {
       this.invoiceDraft = true;
-    },    
+    },
+    async uploadInvoice() {
+      if (this.invoiceItemList.length <= 0) {
+        alert("Please ensure you filled out work items!");
+        return;
+      }
+      this.loading = true;
+      this.calInvoiceTotal();
+      //firebaseから取得。ない場合は作成
+      const dataBase = db.collection("invoices").doc();
+       //firebaseに保存
+      await dataBase.set({
+        invoiceId: uid(6),
+        billerStreetAddress: this.billerStreetAddress,
+        billerCity: this.billerCity,
+        billerZipCode: this.billerZipCode,
+        billerCountry: this.billerCountry,
+        clientName: this.clientName,
+        clientEmail: this.clientEmail,
+        clientStreetAddress: this.clientStreetAddress,
+        clientCity: this.clientCity,
+        clientZipCode: this.clientZipCode,
+        clientCountry: this.clientCountry,
+        invoiceDate: this.invoiceDate,
+        invoiceDateUnix: this.invoiceDateUnix,
+        paymentTerms: this.paymentTerms,
+        paymentDueDate: this.paymentDueDate,
+        paymentDueDateUnix: this.paymentDueDateUnix,
+        productDescription: this.productDescription,
+        invoiceItemList: this.invoiceItemList,
+        invoiceTotal: this.invoiceTotal,
+        invoicePending: this.invoicePending,
+        invoiceDraft: this.invoiceDraft,
+        invoicePaid: null,
+      });
+      this.loading = false;
+      this.TOGGLE_INVOICE();
+      this.GET_INVOICES();
+    },
+    async updateInvoice() {
+      if (this.invoiceItemList.length <= 0) {
+        alert("Please ensure you filled out work items!");
+        return;
+      }
+      this.loading = true;
+      this.calInvoiceTotal();
+      const dataBase = db.collection("invoices").doc(this.docId);
+      await dataBase.update({
+        billerStreetAddress: this.billerStreetAddress,
+        billerCity: this.billerCity,
+        billerZipCode: this.billerZipCode,
+        billerCountry: this.billerCountry,
+        clientName: this.clientName,
+        clientEmail: this.clientEmail,
+        clientStreetAddress: this.clientStreetAddress,
+        clientCity: this.clientCity,
+        clientZipCode: this.clientZipCode,
+        clientCountry: this.clientCountry,
+        paymentTerms: this.paymentTerms,
+        paymentDueDate: this.paymentDueDate,
+        paymentDueDateUnix: this.paymentDueDateUnix,
+        productDescription: this.productDescription,
+        invoiceItemList: this.invoiceItemList,
+        invoiceTotal: this.invoiceTotal,
+      });
+      this.loading = false;
+      const data = {
+        docId: this.docId,
+        routeId: this.$route.params.invoiceId,
+      };
+      this.UPDATE_INVOICE(data);
+    },
     submitForm() {
       if (this.editInvoice) {
         this.updateInvoice();
@@ -235,24 +307,17 @@ export default {
       }
       this.uploadInvoice();
     },
-},
-    watch: {
+  },
+  computed: {
+    ...mapState(["editInvoice", "currentInvoiceArray"]),
+  },
+  watch: {
     paymentTerms() {
       const futureDate = new Date();
-      this.paymentDueDateUnix = futureDate.setDate
-      //paymentTermsをintに変える
-      (futureDate.getDate() + parseInt(this.paymentTerms));
+      this.paymentDueDateUnix = futureDate.setDate(futureDate.getDate() + parseInt(this.paymentTerms));
       this.paymentDueDate = new Date(this.paymentDueDateUnix).toLocaleDateString("en-us", this.dateOptions);
     },
-    },
-    //Invoice Modalをクローズ
-    closeInvoice() {
-      this.TOGGLE_INVOICE();
-      if (this.editInvoice) {
-        this.TOGGLE_EDIT_INVOICE();
-      }
-    },
-    
+  },
 };
 </script>
 
