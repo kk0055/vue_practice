@@ -125,6 +125,7 @@
 <script>
 // import Loading from "../components/Loading";
 import { mapActions, mapMutations, mapState } from "vuex";
+import { uid } from "uid";
 export default {
   name: "invoiceModal",
   data() {
@@ -195,6 +196,34 @@ export default {
       if (e.target === this.$refs.invoiceWrap) {
         this.TOGGLE_MODAL();
       }
+    },    
+    closeInvoice() {
+      this.TOGGLE_INVOICE();
+      if (this.editInvoice) {
+        this.TOGGLE_EDIT_INVOICE();
+      }
+    },
+    addNewInvoiceItem() {
+      this.invoiceItemList.push({
+        id: uid(),
+        itemName: "",
+        qty: "",
+        price: 0,
+        total: 0,
+      });
+    },
+      deleteInvoiceItem(id) {
+      this.invoiceItemList = this.invoiceItemList.filter((item) => item.id !== id);
+    },
+},
+    watch: {
+    paymentTerms() {
+      const futureDate = new Date();
+      this.paymentDueDateUnix = futureDate.setDate
+      //paymentTermsをintに変える
+      (futureDate.getDate() + parseInt(this.paymentTerms));
+      this.paymentDueDate = new Date(this.paymentDueDateUnix).toLocaleDateString("en-us", this.dateOptions);
+    },
     },
     //Invoice Modalをクローズ
     closeInvoice() {
@@ -203,7 +232,7 @@ export default {
         this.TOGGLE_EDIT_INVOICE();
       }
     },
-    }
+    
 };
 </script>
 
