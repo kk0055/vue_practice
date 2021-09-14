@@ -124,6 +124,7 @@
 
 <script>
 // import Loading from "../components/Loading";
+import db from "../firebase/firebaseInit";
 import { mapActions, mapMutations, mapState } from "vuex";
 import { uid } from "uid";
 export default {
@@ -214,6 +215,25 @@ export default {
     },
       deleteInvoiceItem(id) {
       this.invoiceItemList = this.invoiceItemList.filter((item) => item.id !== id);
+    },
+       calInvoiceTotal() {
+      this.invoiceTotal = 0;
+      this.invoiceItemList.forEach((item) => {
+        this.invoiceTotal += item.total;
+      });
+    },
+    publishInvoice() {
+      this.invoicePending = true;
+    },
+    saveDraft() {
+      this.invoiceDraft = true;
+    },    
+    submitForm() {
+      if (this.editInvoice) {
+        this.updateInvoice();
+        return;
+      }
+      this.uploadInvoice();
     },
 },
     watch: {
