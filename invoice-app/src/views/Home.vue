@@ -62,9 +62,13 @@ export default {
        toggleFilterMenu() {
       this.filterMenu = !this.filterMenu;
     },
-    filteredInvoices() {
-
-    }
+    filteredInvoices(e) {
+      if (e.target.innerText === "Clear Filter") {
+        this.filteredInvoice = null;
+        return;
+      }
+      this.filteredInvoice = e.target.innerText;
+    },
   },
   computed: {
     ...mapState(['invoiceData']),
