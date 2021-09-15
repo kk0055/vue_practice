@@ -27,6 +27,11 @@ export default new Vuex.Store({
     INVOICES_LOADED(state) {
       state.invoicesLoaded = true;
     },
+    SET_CURRENT_INVOICE(state, payload) {
+      state.currentInvoiceArray = state.invoiceData.filter(invoice => {
+        return invoice.invoiceId === payload;
+      })
+    }
   },
   actions: {
     async GET_INVOICES({ commit, state }) {
