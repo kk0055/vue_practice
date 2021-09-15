@@ -115,6 +115,7 @@ export default {
 
     ...mapActions(["DELETE_INVOICE", "UPDATE_STATUS_TO_PENDING", "UPDATE_STATUS_TO_PAID"]),
 
+   //RouteにあるIDの情報を呼び出す
     getCurrentInvoice() {
       //payloadとして現在のrouteのidを渡す
       this.SET_CURRENT_INVOICE(this.$route.params.invoiceId);

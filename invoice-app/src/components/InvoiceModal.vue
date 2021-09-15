@@ -220,7 +220,7 @@ export default {
     deleteInvoiceItem(id) {
       this.invoiceItemList = this.invoiceItemList.filter((item) => item.id !== id);
     },
-    //合計のnvoiceを計算
+    //合計のinvoiceを計算
     calInvoiceTotal() {
       this.invoiceTotal = 0;
       this.invoiceItemList.forEach((item) => {
@@ -279,6 +279,7 @@ export default {
       this.loading = true;
       this.calInvoiceTotal();
       const dataBase = db.collection("invoices").doc(this.docId);
+       //firebaseにupdate
       await dataBase.update({
         billerStreetAddress: this.billerStreetAddress,
         billerCity: this.billerCity,
@@ -302,13 +303,17 @@ export default {
         docId: this.docId,
         routeId: this.$route.params.invoiceId,
       };
+      //actions
       this.UPDATE_INVOICE(data);
     },
+
     submitForm() {
+     //editの時はupdateInvoice
       if (this.editInvoice) {
         this.updateInvoice();
         return;
       }
+       //newの時はuploadInvoice
       this.uploadInvoice();
     },
   },

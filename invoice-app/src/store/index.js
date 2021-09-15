@@ -38,6 +38,23 @@ export default new Vuex.Store({
     DELETE_INVOICE(state, payload) {
       state.invoiceData = state.invoiceData.filter((invoice) => invoice.docId !== payload);
     },
+    UPDATE_STATUS_TO_PAID(state, payload) {
+      state.invoiceData.forEach((invoice) => {
+        if (invoice.docId === payload) {
+          invoice.invoicePaid = true;
+          invoice.invoicePending = false;
+        }
+      });
+    },
+    UPDATE_STATUS_TO_PENDING(state, payload) {
+      state.invoiceData.forEach((invoice) => {
+        if (invoice.docId === payload) {
+          invoice.invoicePaid = false;
+          invoice.invoicePending = true;
+          invoice.invoiceDraft = false;
+        }
+      });
+    },
   },
   actions: {
     async GET_INVOICES({ commit, state }) {
@@ -77,12 +94,15 @@ export default new Vuex.Store({
       commit("INVOICES_LOADED");
     },
     async UPDATE_INVOICE({ commit, dispatch }, { docId, routeId }) {
+      //古いinvoiceを削除
       commit("DELETE_INVOICE", docId);
+      //frebaseにデータがあれば持ってくる。なければ作成。
       await dispatch("GET_INVOICES");
       commit("TOGGLE_INVOICE");
       commit("TOGGLE_EDIT_INVOICE");
       commit("SET_CURRENT_INVOICE", routeId);
     },
+    //Delete from DB
     async DELETE_INVOICE({ commit }, docId) {
       const getInvoice = db.collection("invoices").doc(docId);
       await getInvoice.delete();
