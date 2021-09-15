@@ -3,6 +3,7 @@
     <form @submit.prevent="submitForm" class="invoice-content">
       <Loading v-show="loading" /> 
        <h1 v-if="!editInvoice">New Invoice</h1>
+       <!-- editの場合 -->
       <h1 v-else>Edit Invoice</h1>
 
       <!-- Bill From -->
@@ -115,6 +116,7 @@
         <div class="right flex">
           <button v-if="!editInvoice" type="submit" @click="saveDraft" class="dark-purple">Save Draft</button>
           <button v-if="!editInvoice" type="submit" @click="publishInvoice" class="purple">Create Invoice</button>
+          <!-- editの場合 -->
           <button v-if="editInvoice" type="sumbit" class="purple">Update Invoice</button>
         </div>
       </div>
@@ -160,11 +162,12 @@ export default {
     Loading,
   },
   created() {
-    // get current date for invoice date field
+    // Newの場合
     if (!this.editInvoice) {
       this.invoiceDateUnix = Date.now();
       this.invoiceDate = new Date(this.invoiceDateUnix).toLocaleDateString("en-us", this.dateOptions);
     }
+     // editの場合はデータを入力済み
     if (this.editInvoice) {
       const currentInvoice = this.currentInvoiceArray[0];
       this.docId = currentInvoice.docId;

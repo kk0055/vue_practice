@@ -124,6 +124,7 @@ export default {
     },
     toggleEditInvoice() {
       this.TOGGLE_EDIT_INVOICE();
+      //invoiceModalを出す
       this.TOGGLE_INVOICE();
     },
     async deleteInvoice(docId) {
