@@ -29,7 +29,7 @@
     </div>
     <!-- Invoices -->
     <div v-if="invoiceData.length > 0">
-      <Invoice v-for="(invoice, index) in invoiceData" :invoice="invoice" :key="index" />
+      <Invoice v-for="(invoice, index) in filteredData" :invoice="invoice" :key="index" />
     </div>
     <div v-else class="empty flex flex-column">
       <img src="@/assets/illustration-empty.svg" alt="" />
@@ -72,6 +72,21 @@ export default {
   },
   computed: {
     ...mapState(['invoiceData']),
+
+      filteredData() {
+      return this.invoiceData.filter((invoice) => {
+        if (this.filteredInvoice === "Draft") {
+          return invoice.invoiceDraft === true;
+        }
+        if (this.filteredInvoice === "Pending") {
+          return invoice.invoicePending === true;
+        }
+        if (this.filteredInvoice === "Paid") {
+          return invoice.invoicePaid === true;
+        }
+        return invoice;
+      });
+    },
   },
 };
 </script>

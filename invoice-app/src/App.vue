@@ -1,7 +1,6 @@
 <template>
 <div v-if="invoicesLoaded">
-    <!--   <div v-if="!mobile" class="app flex flex-column"> -->
-    <div v-if="!i" class="app flex flex-column">
+      <div v-if="!mobile" class="app flex flex-column">
       <Navigation />
       <div class="app-content flex flex-column">
         <Modal v-if="modalActive" />
