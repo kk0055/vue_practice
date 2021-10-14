@@ -84,6 +84,7 @@ export default {
         if (this.filteredInvoice === "Paid") {
           return invoice.invoicePaid === true;
         }
+        //filterに該当のモノがない時は全部出す
         return invoice;
       });
     },
