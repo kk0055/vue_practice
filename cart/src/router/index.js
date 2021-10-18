@@ -15,7 +15,7 @@ const routes = [
     component: Products
   },
   {
-    path: '/post-orders',
+    path: '/past-orders',
     name: 'PastOrders',
     component: PastOrders
   },
