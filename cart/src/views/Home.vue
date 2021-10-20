@@ -24,13 +24,6 @@
           </ProductCard>
         </div>
       </main>
-      <sidebar
-        v-if="showSidebar"
-        :toggle="toggleSidebar"
-        :cart="cart"
-        :inventory="inventory"
-        :remove="removeItem"
-      />
       <footer>
       </footer>
 
