@@ -33,13 +33,13 @@ export default {
  props: {
    name:String,
    email:String,
-   phone:Number,
+   phone:String,
  },
-//  emits: [
-//    'update:name',
-//    'update:email',
-//    'update:phone',
-//  ],
+ emits: [
+   'update:name',
+   'update:email',
+   'update:phone',
+ ],
  methods: {
    changeName(e) {
    this.$emit('update:name', e.target.value)

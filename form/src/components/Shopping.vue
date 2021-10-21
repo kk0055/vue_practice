@@ -1,18 +1,18 @@
 <template>
   <div class="p-field">
-    <label for="name-input">street</label>
-    <InputText id="name-input" type="text" 
+    <label for="street-input">street</label>
+    <InputText id="street-input" type="text" 
     :value="street" @input="changeStreet" />
   </div>
   <div class="p-field">
-    <label for="email-input">state</label>
-    <InputText id="email-input" type="text" 
+    <label for="state-input">state</label>
+    <InputText id="state-input" type="text" 
     :value="state" @input="changeState" />
     
   </div>
     <div class="p-field">
-    <label for="phone-input">zip</label>
-    <InputText id="phone-input" type="number" 
+    <label for="zip-input">zip</label>
+    <InputText id="zip-input" type="number" 
     :value="zip"  @input="changeZip" />
   </div>
 </template>
@@ -26,7 +26,7 @@ export default {
  props: {
    street:String,
    state:String,
-   zip:Number,
+   zip:String,
  },
  emits: [
    'update:street',

@@ -15,11 +15,14 @@
      />
   
   <Shopping v-else-if="step ===2"
-     v-model:street="contactInfo.street"
-     v-model:state="contactInfo.state"
-     v-model:zip="contactInfo.zip"
+     v-model:street="shippingInfo.street"
+     v-model:state="shippingInfo.state"
+     v-model:zip="shippingInfo.zip"
   />
-  <Review v-else/>
+  <Review v-else
+  :contactInfo="contactInfo"
+  :shippingInfo="shippingInfo"
+  />
     </template>
     <template #footer>
      <Button label="Previous" v-if="step > 1" @click="step -= 1" />
@@ -70,7 +73,10 @@ export default {
           return 'Review'
       }
     }
-  }
+  },
+    methods: {
+      submit(){}
+    }
 }
 </script>
 <style >
