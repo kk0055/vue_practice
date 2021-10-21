@@ -23,6 +23,7 @@
   :contactInfo="contactInfo"
   :shippingInfo="shippingInfo"
   />
+
     </template>
     <template #footer>
      <Button label="Previous" v-if="step > 1" @click="step -= 1" />
@@ -38,6 +39,7 @@ import Card from 'primevue/card';
 import Contact from '@/components/Contact.vue'
 import Shopping from '@/components/Shopping.vue'
 import Review from '@/components/Review.vue'
+import Cart from '@/views/Cart.vue'
 import Button from 'primevue/button';
 export default {
   name: 'CheckoutWizard',
@@ -46,7 +48,8 @@ export default {
     Contact,
     Shopping,
     Review,
-    Card
+    Card,
+    Cart
   },
   data() {
     return {
@@ -61,6 +64,10 @@ export default {
        state:'',
        zip:'',
       },
+      productsinfo:{
+        name:'',
+        description:''
+      }
     }
   },
   computed: {
