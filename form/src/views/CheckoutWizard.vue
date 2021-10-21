@@ -7,8 +7,18 @@
        {{ stepTitle }}
     </template>
     <template #content>
-   <Contact v-if="step ===1" />
-  <Shopping v-else-if="step ===2"/>
+   <Contact 
+     v-if="step ===1" 
+     v-model:name="contactInfo.name"
+     v-model:email="contactInfo.email"
+     v-model:phone="contactInfo.phone"
+     />
+  
+  <Shopping v-else-if="step ===2"
+     v-model:street="contactInfo.street"
+     v-model:state="contactInfo.state"
+     v-model:zip="contactInfo.zip"
+  />
   <Review v-else/>
     </template>
     <template #footer>
@@ -37,7 +47,17 @@ export default {
   },
   data() {
     return {
-      step:1
+      step:1,
+      contactInfo:{
+        name:'',
+        email:'',
+        phone:''
+      },
+      shippingInfo:{
+       street:'',
+       state:'',
+       zip:'',
+      },
     }
   },
   computed: {
