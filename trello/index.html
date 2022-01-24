@@ -18,6 +18,21 @@
         class="m-2 bg-gray-200 rounded-lg h-full"
       >
         <div class="font-bold text-sm p-4">{{ list.name }}</div>
+     
+      <div class="mx-2 mb-8">
+        <div v-for="(task,index) in list.tasks" :key="index" class="mb-3 p-2 bg-white shadow text-xs rounded w-60">
+          <div>
+            <div class="font-bold mb-2">
+              {{ task.name}}
+            </div>
+            <div v-show="task.description">
+              {{ task.description}}
+            </div>
+            <div class="text-xs flex justify-end">
+              {{ task.user_name }}
+            </div>
+          </div>
+      </div>
       </div>
     </div>
   </div>
