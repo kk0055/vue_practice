@@ -13,7 +13,8 @@
 
   <div id="app">
     <div id="trello" class="flex m-10">
-      <div v-for="(list,index) in lists" :key="index" style="min-width:260px" class="m-2 bg-gray-200 rounded-lg h-full">
+      <div v-for="(list,index) in lists" :key="index" style="min-width:260px"
+        class="m-2 bg-gray-200 rounded-lg h-full select-none">
         <div class="font-bold text-sm p-4">{{ list.name }}</div>
 
         <div class="mx-2 mb-8">
@@ -43,6 +44,13 @@
       return {
         element: '',
         dragging: false,
+        pageX: 0,
+        pageY: 0,
+        top: 0,
+        left: 0,
+        placeHolder: '',
+        first: true,
+        height:0,
         lists: [
           {
             id: 1,
@@ -118,14 +126,30 @@
         this.dragging = true;
         this.element = event.target;
         this.element.style.position = "absolute";
+        this.pageX = event.pageX;
+        this.pageY = event.pageY;
+        this.top = this.element.getBoundingClientRect().top;
+        this.left = this.element.getBoundingClientRect().left;
+        this.height = this.element.getBoundingClientRect().height;
+        this.first = true;
         console.log('マウスダウンイベント')
+
       },
-      mouseMove() {
-        if (this.dragging) {
-          this.element.style.top = `${event.pageY}px`
-          this.element.style.left = `${event.pageX}px`
-        }
-      },
+      mouseMove(){
+  if(this.dragging){
+    if(this.first){
+      this.placeHolder = document.createElement("div");
+      this.placeHolder.style.height = `${this.height}px`
+      this.placeHolder.classList.add("mb-3", "p-2", "bg-gray-300");
+      this.element.parentNode.insertBefore(this.placeHolder, this.element.nextSibling);
+      this.first = false;
+    }
+    let moveX = event.pageX - this.pageX;
+    let moveY = event.pageY - this.pageY;
+    this.element.style.top = `${this.top + moveY}px`
+    this.element.style.left = `${this.left + moveX}px`
+  }
+},
       mouseUp() {
         this.dragging = false;
         console.log('マウスアップイベント')
