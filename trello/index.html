@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="ja">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,110 +8,132 @@
   <link href="https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css" rel="stylesheet">
   <title>Trelloタスク並び替えドラッグ&ドラッグクローン</title>
 </head>
+
 <body>
 
   <div id="app">
     <div id="trello" class="flex m-10">
-      <div 
-        v-for="(list,index) in lists" 
-        :key="index" 
-        style="min-width:260px"
-        class="m-2 bg-gray-200 rounded-lg h-full"
-      >
+      <div v-for="(list,index) in lists" :key="index" style="min-width:260px" class="m-2 bg-gray-200 rounded-lg h-full">
         <div class="font-bold text-sm p-4">{{ list.name }}</div>
-     
-      <div class="mx-2 mb-8">
-        <div v-for="(task,index) in list.tasks" :key="index" class="mb-3 p-2 bg-white shadow text-xs rounded w-60">
-          <div>
-            <div class="font-bold mb-2">
-              {{ task.name}}
-            </div>
-            <div v-show="task.description">
-              {{ task.description}}
-            </div>
-            <div class="text-xs flex justify-end">
-              {{ task.user_name }}
+
+        <div class="mx-2 mb-8">
+          <div v-for="(task,index) in list.tasks" :key="index" class="mb-3 p-2 bg-white shadow text-xs rounded w-60"
+            @mousedown="mouseDown" draggable="true">
+            <div class="pointer-events-none">
+              <div class="font-bold mb-2">
+                {{ task.name}}
+              </div>
+              <div v-show="task.description">
+                {{ task.description}}
+              </div>
+              <div class="text-xs flex justify-end">
+                {{ task.user_name }}
+              </div>
             </div>
           </div>
-      </div>
+        </div>
       </div>
     </div>
-  </div>
 </body>
+
 </html>
 <script>
   const app = Vue.createApp({
-    data(){
-  return {
-    lists: [
-      {
-        id: 1,
-        name: 'ToDo',
-        tasks: [
+    data() {
+      return {
+        element: '',
+        dragging: false,
+        lists: [
           {
             id: 1,
-            name: 'レポートの作成',
-            description: 'コロナに影響による飲食店の倒産件数の調査',
-            user_name: '鈴木',
+            name: 'ToDo',
+            tasks: [
+              {
+                id: 1,
+                name: 'レポートの作成',
+                description: 'コロナに影響による飲食店の倒産件数の調査',
+                user_name: '鈴木',
+              },
+              {
+                id: 2,
+                name: '業界の調査',
+                description: '',
+                user_name: '佐藤',
+              },
+              {
+                id: 3,
+                name: 'ウェビナーの開催',
+                description: '',
+                user_name: '鈴木',
+              },
+              {
+                id: 7,
+                name: 'メルマガの送信(毎週)',
+                description: '',
+                user_name: '鈴木',
+              },
+              {
+                id: 8,
+                name: '社内セキュリティトレーニング再テスト',
+                description: '',
+                user_name: '鈴木',
+              },
+            ]
           },
           {
             id: 2,
-            name: '業界の調査',
-            description: '',
-            user_name: '佐藤',
+            name: '作業中',
+            tasks: [
+              {
+                id: 4,
+                name: '見積もりの作成',
+                description: '',
+                user_name: '山田',
+              },
+            ]
           },
           {
             id: 3,
-            name: 'ウェビナーの開催',
-            description: '',
-            user_name: '鈴木',
-          },
-          {
-            id: 7,
-            name: 'メルマガの送信(毎週)',
-            description: '',
-            user_name: '鈴木',
-          },
-          {
-            id: 8,
-            name: '社内セキュリティトレーニング再テスト',
-            description: '',
-            user_name: '鈴木',
-          },
-        ]
-      },
-      {
-        id: 2,
-        name: '作業中',
-        tasks: [
-          {
-            id: 4,
-            name: '見積もりの作成',
-            description: '',
-            user_name: '山田',
+            name: '完了',
+            tasks: [
+              {
+                id: 5,
+                name: 'B社への支払い',
+                description: '経理への連絡を忘れないように',
+                user_name: '鈴木',
+              },
+              {
+                id: 6,
+                name: '鈴木さんの休暇申請承認',
+                description: '',
+                user_name: '佐藤',
+              },
+            ]
           },
         ]
+      }
+    },
+    methods: {
+      mouseDown() {
+        this.dragging = true;
+        this.element = event.target;
+        this.element.style.position = "absolute";
+        console.log('マウスダウンイベント')
       },
-      {
-        id: 3,
-        name: '完了',
-        tasks: [
-          {
-            id: 5,
-            name: 'B社への支払い',
-            description: '経理への連絡を忘れないように',
-            user_name: '鈴木',
-          },
-          {
-            id: 6,
-            name: '鈴木さんの休暇申請承認',
-            description: '',
-            user_name: '佐藤',
-          },
-        ]
+      mouseMove() {
+        if (this.dragging) {
+          this.element.style.top = `${event.pageY}px`
+          this.element.style.left = `${event.pageX}px`
+        }
       },
-    ]
-  }
-}
+      mouseUp() {
+        this.dragging = false;
+        console.log('マウスアップイベント')
+      }
+    },
+    mounted() {
+      window.addEventListener('mousemove', this.mouseMove)
+      window.addEventListener('mouseup', this.mouseUp);
+    }
   }).mount('#app')
 </script>
