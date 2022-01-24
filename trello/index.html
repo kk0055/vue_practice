@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="https://unpkg.com/vue@next"></script>
+  <link href="https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css" rel="stylesheet">
+  <title>Trelloタスク並び替えドラッグ&ドラッグクローン</title>
+</head>
+<body>
+
+  <div id="app">
+    <div id="trello" class="flex m-10">
+      <div 
+        v-for="(list,index) in lists" 
+        :key="index" 
+        style="min-width:260px"
+        class="m-2 bg-gray-200 rounded-lg h-full"
+      >
+        <div class="font-bold text-sm p-4">{{ list.name }}</div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>
+<script>
+  const app = Vue.createApp({
+    data(){
+  return {
+    lists: [
+      {
+        id: 1,
+        name: 'ToDo',
+        tasks: [
+          {
+            id: 1,
+            name: 'レポートの作成',
+            description: 'コロナに影響による飲食店の倒産件数の調査',
+            user_name: '鈴木',
+          },
+          {
+            id: 2,
+            name: '業界の調査',
+            description: '',
+            user_name: '佐藤',
+          },
+          {
+            id: 3,
+            name: 'ウェビナーの開催',
+            description: '',
+            user_name: '鈴木',
+          },
+          {
+            id: 7,
+            name: 'メルマガの送信(毎週)',
+            description: '',
+            user_name: '鈴木',
+          },
+          {
+            id: 8,
+            name: '社内セキュリティトレーニング再テスト',
+            description: '',
+            user_name: '鈴木',
+          },
+        ]
+      },
+      {
+        id: 2,
+        name: '作業中',
+        tasks: [
+          {
+            id: 4,
+            name: '見積もりの作成',
+            description: '',
+            user_name: '山田',
+          },
+        ]
+      },
+      {
+        id: 3,
+        name: '完了',
+        tasks: [
+          {
+            id: 5,
+            name: 'B社への支払い',
+            description: '経理への連絡を忘れないように',
+            user_name: '鈴木',
+          },
+          {
+            id: 6,
+            name: '鈴木さんの休暇申請承認',
+            description: '',
+            user_name: '佐藤',
+          },
+        ]
+      },
+    ]
+  }
+}
+  }).mount('#app')
+</script>
