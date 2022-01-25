@@ -34,6 +34,8 @@
           </div>
         </div>
       </div>
+      <!-- Vue.jsから直接要素にアクセス -->
+      <div ref="drag"></div>
     </div>
 </body>
 
@@ -48,9 +50,10 @@
         pageY: 0,
         top: 0,
         left: 0,
+        dragElement: '',
         placeHolder: '',
         first: true,
-        height:0,
+        height: 0,
         lists: [
           {
             id: 1,
@@ -125,7 +128,7 @@
       mouseDown() {
         this.dragging = true;
         this.element = event.target;
-        this.element.style.position = "absolute";
+
         this.pageX = event.pageX;
         this.pageY = event.pageY;
         this.top = this.element.getBoundingClientRect().top;
@@ -135,22 +138,35 @@
         console.log('マウスダウンイベント')
 
       },
-      mouseMove(){
-  if(this.dragging){
-    if(this.first){
-      this.placeHolder = document.createElement("div");
-      this.placeHolder.style.height = `${this.height}px`
-      this.placeHolder.classList.add("mb-3", "p-2", "bg-gray-300");
-      this.element.parentNode.insertBefore(this.placeHolder, this.element.nextSibling);
-      this.first = false;
-    }
-    let moveX = event.pageX - this.pageX;
-    let moveY = event.pageY - this.pageY;
-    this.element.style.top = `${this.top + moveY}px`
-    this.element.style.left = `${this.left + moveX}px`
-  }
-},
+      mouseMove() {
+        if (this.dragging) {
+          if (this.first) {
+            this.placeHolder = document.createElement("div");
+            this.placeHolder.style.height = `${this.height}px`
+            this.placeHolder.classList.add("mb-3", "p-2", "bg-gray-300");
+            this.element.parentNode.insertBefore(this.placeHolder, this.element.nextSibling);
+
+            //ドラッグ要素の複製の実施とdiv要素への追加
+            this.dragElement = this.element.cloneNode(true);
+            this.element.style.display = "none";
+            this.dragElement.style.position = "absolute";
+
+            this.$refs.drag.appendChild(this.dragElement)
+            this.dragElement.style.top = `${this.top}px`;
+            this.dragElement.style.left = `${this.left}px`;
+            this.dragElement.classList.add("transform", "rotate-12")
+            this.first = false;
+          }
+          let moveX = event.pageX - this.pageX;
+          let moveY = event.pageY - this.pageY;
+          this.dragElement.style.top = `${this.top + moveY}px`
+          this.dragElement.style.left = `${this.left + moveX}px`
+        }
+      },
       mouseUp() {
+        this.placeHolder.remove()
+        this.dragElement.remove();
+        this.element.style.display = "block";
         this.dragging = false;
         console.log('マウスアップイベント')
       }
