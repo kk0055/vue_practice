@@ -14,12 +14,13 @@
   <div id="app">
     <div id="trello" class="flex m-10">
       <div v-for="(list,index) in lists" :key="index" style="min-width:260px"
-        class="m-2 bg-gray-200 rounded-lg h-full select-none">
+        class="m-2 bg-gray-200 rounded-lg h-full select-none list" :data-list-id="list.id">
         <div class="font-bold text-sm p-4">{{ list.name }}</div>
 
         <div class="mx-2 mb-8">
-          <div v-for="(task,index) in list.tasks" :key="index" class="mb-3 p-2 bg-white shadow text-xs rounded w-60"
-            @mousedown="mouseDown" draggable="true">
+          <div v-for="(task,index) in list.tasks" :key="index"
+            class="mb-3 p-2 bg-white shadow text-xs rounded w-60 sortable" :data-task-id="task.id"
+            @mousedown="mouseDown(task, list)">
             <div class="pointer-events-none">
               <div class="font-bold mb-2">
                 {{ task.name}}
@@ -54,6 +55,10 @@
         placeHolder: '',
         first: true,
         height: 0,
+        list: '',
+        listId: '',
+        task: '',
+        taskId: '',
         lists: [
           {
             id: 1,
@@ -125,8 +130,10 @@
       }
     },
     methods: {
-      mouseDown() {
+      mouseDown(task, list) {
         this.dragging = true;
+        this.task = task;
+        this.list = list;
         this.element = event.target;
 
         this.pageX = event.pageX;
@@ -161,6 +168,37 @@
           let moveY = event.pageY - this.pageY;
           this.dragElement.style.top = `${this.top + moveY}px`
           this.dragElement.style.left = `${this.left + moveX}px`
+          let lists = document.querySelectorAll('.list')
+
+          lists.forEach(list => {
+            let sortableTasks = [...list.querySelectorAll('.sortable')].filter(task => task.style.display !== 'none')
+            let belowElement = sortableTasks.reduce((closestElement, sortableTask) => {
+              let taskElementBox = sortableTask.getBoundingClientRect()
+              let offsetY = event.pageY - (taskElementBox.top + taskElementBox.height / 2)
+              if (offsetY < 0 && offsetY > closestElement.offsetY) {
+                return {
+                  offsetY: offsetY,
+                  element: sortableTask
+                }
+              } else {
+                return closestElement;
+              }
+            }, { offsetY: Number.NEGATIVE_INFINITY }).element
+
+            this.listId = parseInt(list.dataset.listId);
+
+            this.placeHolder.remove()
+            this.placeHolder = document.createElement("div");
+            this.placeHolder.style.height = `${this.height}px`
+            this.placeHolder.classList.add("mb-3", "p-2", "bg-gray-300");
+            if (belowElement == undefined) {
+              list.children[1].appendChild(this.placeHolder)
+              this.taskId = null
+            } else {
+              list.children[1].insertBefore(this.placeHolder, belowElement)
+              this.taskId = parseInt(belowElement.dataset.taskId);
+            }
+          })
         }
       },
       mouseUp() {
