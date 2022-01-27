@@ -96,36 +96,36 @@
               },
             ]
           },
-          {
-            id: 2,
-            name: '作業中',
-            tasks: [
-              {
-                id: 4,
-                name: '見積もりの作成',
-                description: '',
-                user_name: '山田',
-              },
-            ]
-          },
-          {
-            id: 3,
-            name: '完了',
-            tasks: [
-              {
-                id: 5,
-                name: 'B社への支払い',
-                description: '経理への連絡を忘れないように',
-                user_name: '鈴木',
-              },
-              {
-                id: 6,
-                name: '鈴木さんの休暇申請承認',
-                description: '',
-                user_name: '佐藤',
-              },
-            ]
-          },
+          // {
+          //   id: 2,
+          //   name: '作業中',
+          //   tasks: [
+          //     {
+          //       id: 4,
+          //       name: '見積もりの作成',
+          //       description: '',
+          //       user_name: '山田',
+          //     },
+          //   ]
+          // },
+          // {
+          //   id: 3,
+          //   name: '完了',
+          //   tasks: [
+          //     {
+          //       id: 5,
+          //       name: 'B社への支払い',
+          //       description: '経理への連絡を忘れないように',
+          //       user_name: '鈴木',
+          //     },
+          //     {
+          //       id: 6,
+          //       name: '鈴木さんの休暇申請承認',
+          //       description: '',
+          //       user_name: '佐藤',
+          //     },
+          //   ]
+          // },
         ]
       }
     },
@@ -202,6 +202,22 @@
         }
       },
       mouseUp() {
+        if (this.dragging && !this.first) {
+        let deleteIndex;
+        this.list.tasks.map((task, index) => { if (task.id === this.task.id) deleteIndex = index })
+        //deleteIndexからひとつ削除
+        this.list.tasks.splice(deleteIndex, 1)
+
+        let list = this.lists.find(list => list.id === this.listId);
+        if (this.taskId !== null) {
+          let addIndex;
+          list.tasks.map((task,index) => {if (task.id === this.taskId) addIndex = index})
+          //addIndexから、0個の要素を削除し、this,taskを挿入
+          list.tasks.splice(addIndex, 0 , this,task)
+        } else {
+          list.tasks.push(this.task)
+        }
+      }
         this.placeHolder.remove()
         this.dragElement.remove();
         this.element.style.display = "block";
@@ -210,6 +226,7 @@
       }
     },
     mounted() {
+  
       window.addEventListener('mousemove', this.mouseMove)
       window.addEventListener('mouseup', this.mouseUp);
     }
