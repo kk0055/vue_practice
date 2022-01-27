@@ -213,20 +213,20 @@
           let addIndex;
           list.tasks.map((task,index) => {if (task.id === this.taskId) addIndex = index})
           //addIndexから、0個の要素を削除し、this,taskを挿入
-          list.tasks.splice(addIndex, 0 , this,task)
+          list.tasks.splice(addIndex, 0 , this.task)
         } else {
           list.tasks.push(this.task)
         }
-      }
         this.placeHolder.remove()
         this.dragElement.remove();
         this.element.style.display = "block";
+      }
+      
         this.dragging = false;
-        console.log('マウスアップイベント')
       }
     },
+    //DOM作成時
     mounted() {
-  
       window.addEventListener('mousemove', this.mouseMove)
       window.addEventListener('mouseup', this.mouseUp);
     }
