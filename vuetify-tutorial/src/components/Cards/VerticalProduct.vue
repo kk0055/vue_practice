@@ -4,7 +4,7 @@
     <v-card-title> {{ product.name }} </v-card-title>
     <v-card-subtitle> ${{ product.price }} </v-card-subtitle>
     <v-card-actions>
-      <v-btn color="success" outlined>
+      <v-btn @click="addToCart" color="success" outlined>
         <v-icon>mdi-plus</v-icon>
         Add to Cart
       </v-btn>

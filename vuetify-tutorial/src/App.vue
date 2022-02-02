@@ -4,7 +4,7 @@
       <TopNav />
       <v-content>
         <router-view />
-        <!-- <v-snackbar
+        <v-snackbar
           v-model="snackbar.show"
           :multi-line="true"
           :right="true"
@@ -16,13 +16,14 @@
           <v-btn dark text @click="updateSnackbar({ show: false })">
             Close
           </v-btn>
-        </v-snackbar> -->
+        </v-snackbar>
       </v-content>
     </v-main>
   </v-app>
 </template>
 
 <script>
+import { mapState, mapMutations } from 'vuex'
 import TopNav from "./components/TopNav";
 export default {
   name: "App",
@@ -33,5 +34,11 @@ export default {
   components: {
     TopNav,
   },
+  computed: {
+    ...mapState(['snackbar'])
+  },
+  methods: {
+    ...mapMutations(['updateSnackbar'])
+  }
 };
 </script>
