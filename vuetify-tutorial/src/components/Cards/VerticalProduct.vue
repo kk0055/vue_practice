@@ -16,6 +16,7 @@
 export default {
   props: {
     product:Object,
+    addToCart: Function
   }
 }
 </script>

@@ -1,5 +1,5 @@
 <template>
   <v-footer clas="pa-4" fixed>
-    @copyrights
+    @copyrights  
   </v-footer>
 </template>
