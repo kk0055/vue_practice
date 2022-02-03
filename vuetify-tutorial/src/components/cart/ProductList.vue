@@ -1,7 +1,7 @@
 <template>
   <div>
-    <v-row v-for="product in $store.state.products" :key="product.name">
-      <HorizontalProduct :product="product" :btnAction="removeFromCart"/>
+    <v-row v-for="(product, i) in products" :key="i">
+      <HorizontalProduct :product="product" :i="i" btnAction="remove" />
     </v-row>
   </div>
 </template>
@@ -12,9 +12,7 @@ export default {
     HorizontalProduct,
   },
   methods: {
-    removeFromCart() {
-
-    }
-  }
+    removeFromCart() {},
+  },
 };
 </script>

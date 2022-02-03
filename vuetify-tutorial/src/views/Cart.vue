@@ -4,7 +4,7 @@
     <v-col sm="8" md="5" offset-md="2" offset-lg="3">
    <ProductList/>
     </v-col>
-       <v-col sm="4" md="2">
+       <v-col sm="4" md="2" order="first" order-sm="last" >
    <CheckoutBox/>
     </v-col>
   </v-row>

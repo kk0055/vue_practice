@@ -1,7 +1,5 @@
 <template>
-  <v-card outlined min-width="100%"
-  class="mb-5 pa-4 mt-4"
-  >
+  <v-card outlined min-width="100%" class="mb-5 pa-4 mt-4">
     <div class="d-flex">
       <div>
         <v-img :src="product.image" width="120px" height="120px"> </v-img>
