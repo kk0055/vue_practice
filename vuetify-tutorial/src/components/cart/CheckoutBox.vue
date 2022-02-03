@@ -24,8 +24,8 @@ export default {
   },
   methods: {
     goToCheckout() {
-      // this.$router.push({name:'checkout'})
-      console.log('added');
+      this.$router.push({name:'Checkout'})
+     
     },
   },
 };
