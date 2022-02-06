@@ -8,9 +8,7 @@
     <v-container v-if="!overlay">
       <v-row>
         <v-col sm="6" offset-sm="3" xl="4" offset-xl="4">
-          <h2>
-            Thank you for your purchase! It will be shipped soon.
-          </h2>
+          <h2>Thank you for your purchase! It will be shipped soon.</h2>
         </v-col>
       </v-row>
     </v-container>
@@ -20,16 +18,16 @@
 export default {
   data() {
     return {
-      overlay:false
-    }
+      overlay: false,
+    };
   },
   mounted() {
     setTimeout(() => {
-      this.overlay = false
-    },3000)
+      this.overlay = false;
+    }, 3000);
   },
   beforeMount() {
-    this.overlay = true
+    this.overlay = true;
   },
-}
+};
 </script>

@@ -7,7 +7,10 @@
       <div class="d-flex flex-column justify-center">
         <v-card-title class="pt-0">{{ product.name }}</v-card-title>
         <v-card-subtitle> ${{ product.price }} </v-card-subtitle>
-        <v-btn color="error" class="ml-4" outlined small>
+
+        <v-btn color="error" class="ml-4" outlined small
+        
+        >
           <v-icon small left>mdi-delete</v-icon>
           Remove From Cart</v-btn
         >
@@ -20,7 +23,8 @@ export default {
   props: {
     product: Object,
     updateCart: Function,
-    btnAction: Function,
+    btnAction: String,
+    i: Number,
   },
 };
 </script>
