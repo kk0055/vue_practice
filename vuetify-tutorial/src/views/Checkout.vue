@@ -85,7 +85,7 @@ export default {
       this.step -= 1;
     },
     submitOrder() {
-      this.$router.push({ name: "Thankyou" });
+      this.$router.push({ name: "ThankYou" });
     },
   },
 };
