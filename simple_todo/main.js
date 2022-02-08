@@ -21,6 +21,17 @@ const app = new Vue({
     todos: []
   },
   methods: {
-    // 使用するメソッド
+    doAdd(event, value) {
+     let comment = this.$refs.comment
+     if (!comment.value.length) {
+       return
+     }
+     this.todos.push({
+       id: todoStorage.uid++,
+       comment:comment.value,
+       state: 0
+     })
+     comment.value = ''
+    }
   }
 })
