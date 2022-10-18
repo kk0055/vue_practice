@@ -1,11 +1,45 @@
+const NYTBaseUrl = "https://api.nytimes.com/svc/topstories/v2/";
+
+
+function buildUrl(url) {
+  return NYTBaseUrl + url + ".json?api-key=" + ApiKey
+}
+
 const vm = new Vue({
   el: '#app',
   data: {
-    results: [
-      {title: "the very first post", abstract: "lorem ipsum some test dimpsum"},
-      {title: "and then there was the second", abstract: "lorem ipsum some test dimsum"},
-      {title: "third time's a charm", abstract: "lorem ipsum some test dimsum"},
-      {title: "four the last time", abstract: "lorem ipsum some test dimsum"}
-    ]
+    results: []
+  },
+  mounted() {
+    this.getPosts('home');
+  },
+  methods: {
+    getPosts(section) {
+      let url = buildUrl(section);
+      axios.get(url).then((response) => {
+        this.results = response.data.results;
+      }).catch(error => {
+        console.log(error);
+      });
+    }
+  },
+  computed: {
+    processedPosts() {
+      let posts = this.results;
+      // Add image_url attribute
+      posts.map(post => {
+        if (post.multimedia) {
+          let imgObj = post.multimedia.find(media => media.format === "superJumbo");
+          post.image_url = imgObj ? imgObj.url : "http://placehold.it/300x200?text=N/A";
+        }
+      });
+      // Put Array into Chunks
+      let i, j, chunkedArray = [],
+        chunk = 4;
+      for (i = 0, j = 0; i < posts.length; i += chunk, j++) {
+        chunkedArray[j] = posts.slice(i, i + chunk);
+      }
+      return chunkedArray;
+    }
   }
 });
