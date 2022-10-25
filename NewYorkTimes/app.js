@@ -33,8 +33,10 @@ Vue.component('news-list', {
 
       // Add image_url attribute
       posts.map(post => {
-        let imgObj = post.multimedia.find(media => media.format === "superJumbo");
-        post.image_url = imgObj ? imgObj.url : "http://placehold.it/300x200?text=N/A";
+        if(post.multimedia){
+          let imgObj = post.multimedia.find(media => media.format === "Super Jumbo");
+          post.image_url = imgObj ? imgObj.url : "http://placehold.it/300x200?text=N/A";
+        }
       });
 
       // Put Array into Chunks
